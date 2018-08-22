@@ -38,7 +38,15 @@ app.post('/webhook/', function (req, res) {
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
 		    let text = event.message.text
-		    sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+		    request({
+		    	url: 'https://friends-chatbot.herokuapp.com/prediction',
+		    	method: 'POST',
+		    	body: {message: text.substring(0, 200)},
+		    	headers: {'User-Agent': 'request'},
+		    	json: true
+		    }, function(error, response, body) {
+		    	sendTextMessage(sender, response.body)
+		    })
 	    }
     }
     res.sendStatus(200)
