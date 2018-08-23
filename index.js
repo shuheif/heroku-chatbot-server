@@ -38,16 +38,18 @@ app.post('/webhook/', function (req, res) {
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
 		    let text = event.message.text
-		    var request = require('request')
-		    var options = {
-		    	uri: 'https://friends-chatbot.herokuapp.com/prediction',
-		    	headers: {'Content-type': 'application/json',},
-		    	json: {'message': text.substring(0, 200),}
-		    }
-		    request.post(options, function(error, response, body){
-		    	sendTextMessage(sender, response.body)
-		    })
-	    }
+			request({
+	    		url: 'https://friends-chatbot.herokuapp.com/prediction',
+	    		qs: {access_token:token},
+	    		method: 'POST',
+				json: {
+		    		recipient: {id:sender},
+					message: text.substring(0, 200),
+					}
+				}, function(error, response, body) {
+					sendTextMessage(sender, response.body)
+    			})
+	    	}	
     }
     res.sendStatus(200)
 })
