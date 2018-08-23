@@ -15,23 +15,12 @@ app.use(bodyParser.json())
 
 // Index route
 app.get('/', function (req, res) {
-	//res.send('here')
-	/*request({
-			    url: 'https://friends-chatbot.herokuapp.com/prediction',
-			    method: 'POST',
-			    body: {message: 'test'},
-			    headers: {'User-Agent': 'request'},
-				json: true 
-			}, function(error, response, body) {
-				res.send(response)
-				res.semd(response.body)
-			})*/
-	res.send('Hello, world')
+	res.send('Hello, world! This is the index route.')
 })
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
-	if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
+	if (req.query['hub.verify_token'] === '<VERIFY_TOKEN FOR HEROKU APP>') {
 		res.send(req.query['hub.challenge'])
 	}
 	res.send('Error, wrong token')
@@ -45,9 +34,9 @@ app.post('/webhook/', function (req, res) {
 	    if (event.message && event.message.text) {
 	    	let text = event.message.text
 			request({
-			    url: 'https://friends-chatbot.herokuapp.com/prediction',
+			    url: '<URL FOR CHATBOT SERVER HERE>',
 			    method: 'POST',
-			    body: {message: text.substring(0, 200)},
+			    body: {message: text},
 			    headers: {'User-Agent': 'request',
 						'Content-Type': "application/json"},
 				json: true 
@@ -58,8 +47,6 @@ app.post('/webhook/', function (req, res) {
     }
     res.sendStatus(200)
 })
-
-// const token = "EAAHn8e0ZBExwBALjArT2fm61WGz2cMWQcIOQSiodDAa4ZCwzrXp7IhFHrggYqXPZC8JUOZBZCZButTgEojIVkHtzsO49tWC98Gk0sQ59DlFu2nrUK1owKzrktbJr4YUEeU1oDAcXtZAcPHy3WTc86ZBQgDBAnCpfZC850ZACyiZCZB5bSAZDZD"
 
 const token = process.env.FB_PAGE_ACCESS_TOKEN
 
