@@ -15,6 +15,7 @@ app.use(bodyParser.json())
 
 // Index route
 app.get('/', function (req, res) {
+	res.send('here')
 	request({
 			    url: 'https://friends-chatbot.herokuapp.com/prediction',
 			    method: 'POST',
