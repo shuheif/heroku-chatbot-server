@@ -38,12 +38,15 @@ app.post('/webhook/', function (req, res) {
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
 		    let text = event.message.text
+		    let data = {
+		    	"message": text.substring(0, 200)
+		    }
 		    request({
 		    	url: 'https://friends-chatbot.herokuapp.com/prediction',
 		    	method: 'POST',
-		    	body: {message: text.substring(0, 200)},
-		    	headers: {'User-Agent': 'request'},
-		    	json: true
+		    	// body: {message: text.substring(0, 200)},
+		    	// headers: {'User-Agent': 'request'},
+		    	json: data,
 		    }, function(error, response, body) {
 		    	sendTextMessage(sender, response.body)
 		    })
@@ -65,6 +68,7 @@ function sendTextMessage(sender, text) {
 			message: messageData,
 		}
 	}, function(error, response, body) {
+		console.log(response)
 		if (error) {
 		    console.log('Error sending messages: ', error)
 		} else if (response.body.error) {
