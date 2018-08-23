@@ -15,7 +15,7 @@ app.use(bodyParser.json())
 
 // Index route
 app.get('/', function (req, res) {
-	res.send('here')
+	//res.send('here')
 	request({
 			    url: 'https://friends-chatbot.herokuapp.com/prediction',
 			    method: 'POST',
@@ -26,7 +26,7 @@ app.get('/', function (req, res) {
 				res.send(response)
 				res.semd(response.body)
 			})
-	res.send('Hello, world')
+	//res.send('Hello, world')
 })
 
 // for Facebook verification
